@@ -1,0 +1,66 @@
+.mainGame{
+    background-color:palegreen;
+    min-height:50em;
+    margin-top:10px;
+    margin-bottom:10px;
+}
+
+.mainTitleRow{
+  display:flex;
+  justify-content: center;
+
+}
+
+#mainTitle{
+    font-size:7em;
+    text-align:center;
+    /*border:1px solid black;*/
+}
+
+#timeRemaining{
+    display:flex;
+    justify-content: center;
+    font-size:2em;
+    margin-top:3em;
+}
+.title{
+    border:2px solid red;
+    margin:0 auto;
+    max-width:50em;
+    text-align:center;
+}
+
+#questionTitle{
+    font-size:3em;
+}
+
+.answerSection{
+    font-size:2em;
+}
+
+.mainTitleRow{
+    border:1px solid black;
+}
+
+
+.answers{
+    border:1px solid black;
+  margin:0 auto;
+  max-width:50em;
+  text-align:center;
+}
+
+.answers:hover {
+  cursor: pointer;
+    -webkit-transform: perspective(1px) translateZ(0);
+    transform: perspective(1px) translateZ(0);
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+    -webkit-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+    -webkit-transition-property: transform;
+    transition-property: transform;
+  }
+  .answers:hover, .answers:focus, .answers:active {
+    -webkit-transform: scale(1.1);
+    transform: scale(1.1);
+  }
