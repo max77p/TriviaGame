@@ -1,6 +1,24 @@
+document.addEventListener("DOMContentLoaded",function(){
+var startButton=document.createElement("input");
+startButton.value="start";
+startButton.type="button";
+startButton.className="btn btn-primary startBtn";
+document.getElementsByClassName('mainGame')[0].appendChild(startButton);
+
+
+startButton.addEventListener("click",function(){
+  run();
+  startButton.style.display="none";//remove button after click start
+})
+
+
+});
+
+
+
+
 //trivia questions object
 var currentDataValue;
-
 
 var triviaObj = [{
 
@@ -142,7 +160,7 @@ function run() {
     currentDataValue = triviaObj[0].display();
 
 }
-run();
+
 function decrement() {
     number--;
     $("#timeRemaining").html("<h2> Time Remaining: " + number + "</h2>");
