@@ -69,7 +69,7 @@ var triviaObj = [{
         "Chitin",
         "Calcium"
     ],
-    getGif: "finger nail",
+    getGif: "human+nail",
     display: function () {
         var display1 = this.incorrect_answers;
         var display2 = this.correct_answer;
@@ -152,25 +152,34 @@ var triviaObj = [{
 
 
 function showGif() {
-    var movie = triviaObj[currentQuestion].getGif;
-    console.log(movie);
-    var queryURL = "http://api.giphy.com/v1/gifs/random?tag=funny+" + movie + "&api_key=b9iYVAwBVidnNVDrHuHcJZehZKWVNYSs";
+    var correctMovie = "happy";
+    var incorrectMovie= "nope"
+    //console.log(movie);
+    if(correct){
+    var queryURL = "http://api.giphy.com/v1/gifs/random?&api_key=b9iYVAwBVidnNVDrHuHcJZehZKWVNYSs&tag=" + correctMovie + "&rating=G";
+    }
+    else if(incorrect){
+        var queryURL = "http://api.giphy.com/v1/gifs/random?&api_key=b9iYVAwBVidnNVDrHuHcJZehZKWVNYSs&tag=" + incorrectMovie + "&rating=G";
+    }
+    console.log(queryURL);
+    
     $.ajax({
         url: queryURL,
         method: "GET"
     }).then(function (response) {
-        var thisGif = response.data['images'].original['url'];
+        var thisGif = response.data['images'].downsized['url'];
         console.log(thisGif);
         var div = document.createElement("div");
         div.className = "gifSection";
         var img=document.createElement("img");
+        img.id="gifImg";
         img.src=thisGif;
         div.appendChild(img);
         document.getElementsByClassName('mainGame')[0].appendChild(div);
     });
 }//get random gif related to correct/incorrect answer
 
-console.log(triviaObj[0].display1);
+//console.log(triviaObj[0].display1);
 
 
 var intervalId;
