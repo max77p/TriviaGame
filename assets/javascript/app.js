@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
     })
 
 
-});
+});//show start button in initial page load
 
 
 
@@ -154,6 +154,7 @@ var numberofQuestions = triviaObj.length;
 var currentQuestion = 0;
 
 function run() {
+    timesUp = false;
     console.log(currentQuestion === numberofQuestions);
     if (currentQuestion === numberofQuestions) {
         return;
@@ -163,32 +164,31 @@ function run() {
     $('.title').remove();
     $('.answers').remove();
 
-
-
-    
     currentDataValue = triviaObj[currentQuestion].display();
 
     console.log(currentDataValue);
+    clearInterval(intervalId);
     setTimeout(function () {
-        listAnswer();
-        decrement();
-        //clearInterval(intervalId);
         intervalId = setInterval(decrement, 1000);
-
+        decrement();
+        listAnswer();
     }, 0);
 
 
-}
+}//end of run function
 
 function decrement() {
     number--;
     $("#timeRemaining").html("<h2> Time Remaining: " + number + "</h2>");
-
-    if (number === 0) {
+    if(number==0){
         clearInterval(intervalId);
-
     }
-}
+    else if (number === 0 && !correct && !incorrect) {
+        clearInterval(intervalId);
+        timesUp = true;
+        itirateQuestions(triviaObj[currentQuestion].correct_answer);
+    }
+}//end of decrement function
 
 
 //list potential answers
@@ -229,6 +229,7 @@ function listAnswer() {
     //TODO-clickanswer
     checkAnswer();
 
+
 }
 
 
@@ -256,28 +257,37 @@ var incorrect;
 //TODO- set boolean for next question regardless of correct or wrong
 var nextQuestion = false;
 
+//TODO- set boolean for not clicked
+var clicked;
+
+//TODO - set boolean for if no answer is clicked
+var timesUp;
+
 function checkAnswer() {
     correct = false;
     incorrect = false;
     var div = document.getElementsByClassName('answers');
     console.log(div.length);
     for (var i = 0; i < div.length; i++) {
-        div[i].addEventListener("click", function () {
-
+        div[i].addEventListener("click", function (el) {
+            console.log(el);
             if (this.getAttribute("data-value") === triviaObj[currentQuestion].correct_answer) {
                 console.log(("correct!"));
                 correct = true;
+                clicked = true;
                 itirateQuestions(triviaObj[currentQuestion].correct_answer);
             }
-            else {
-                console.log(alert("wrong"));
+            else if (this.getAttribute("data-value") != triviaObj[currentQuestion].correct_answer) {
+                console.log("wrong");
                 incorrect = true;
-                //itirateQuestions();
+                clicked = true;
+                itirateQuestions(triviaObj[currentQuestion].correct_answer);
             }
 
         });
-    }
-};
+
+    }//end of for loop
+};//end of checkAnswer
 
 
 //TODO-show screen if correct/incorrect/time is up
@@ -306,6 +316,13 @@ function showScreenAfterSelection(element) {
         h3.innerHTML = "The correct answer was " + element;
         document.getElementsByClassName('mainGame')[0].appendChild(div);
     }
+    if (timesUp) {
+        h2.innerHTML = "Time is up!";
+        h3.id = "incorrectInfo";
+        div.appendChild(h3);
+        h3.innerHTML = "The correct answer was " + element;
+        document.getElementsByClassName('mainGame')[0].appendChild(div);
+    }
 
 }
 
@@ -321,6 +338,27 @@ function itirateQuestions(el) {
         }, 3000);
 
     }
+    if (incorrect) {
+        showScreenAfterSelection(el);
+        setTimeout(function () {
+            $('.afterSection').remove();
+            currentQuestion++;
+            run();
+        }, 3000);
+
+    }
+
+    if (timesUp) {
+        showScreenAfterSelection(el);
+        setTimeout(function () {
+            $('.afterSection').remove();
+            currentQuestion++;
+            timesUp=false;
+            run();
+        }, 3000);
+
+    }
+
 
 
 }
@@ -330,7 +368,7 @@ function itirateQuestions(el) {
 
 
   //TODO: create object of trivia questions-done
-  //TODO: show trivia questions on screen
-  //TODO: set timer before game switches to next question
-  //TODO: at end of time switch trivia questions -maybe use for loop on object
+  //TODO: show trivia questions on screen - done
+  //TODO: set timer before game switches to next question - done
+  //TODO: at end of time switch trivia questions -maybe use for loop on object -done
   //TODO:
