@@ -1,15 +1,15 @@
-document.addEventListener("DOMContentLoaded",function(){
-var startButton=document.createElement("input");
-startButton.value="start";
-startButton.type="button";
-startButton.className="btn btn-primary startBtn";
-document.getElementsByClassName('mainGame')[0].appendChild(startButton);
+document.addEventListener("DOMContentLoaded", function () {
+    var startButton = document.createElement("input");
+    startButton.value = "start";
+    startButton.type = "button";
+    startButton.className = "btn btn-primary startBtn";
+    document.getElementsByClassName('mainGame')[0].appendChild(startButton);
 
 
-startButton.addEventListener("click",function(){
-  run();
-  startButton.style.display="none";//remove button after click start
-})
+    startButton.addEventListener("click", function () {
+        run();
+        startButton.style.display = "none";//remove button after click start
+    })
 
 
 });
@@ -150,14 +150,33 @@ console.log(triviaObj[0].display1);
 var intervalId;
 var number;
 
+var numberofQuestions = triviaObj.length;
+var currentQuestion = 0;
+
 function run() {
+    console.log(currentQuestion === numberofQuestions);
+    if (currentQuestion === numberofQuestions) {
+        return;
+    }
+
     number = 5;
     $('.title').remove();
     $('.answers').remove();
-    clearInterval(intervalId);
-    intervalId = setInterval(decrement, 1000);
-    setTimeout(listAnswer, 1000);
-    currentDataValue = triviaObj[0].display();
+
+
+
+    
+    currentDataValue = triviaObj[currentQuestion].display();
+
+    console.log(currentDataValue);
+    setTimeout(function () {
+        listAnswer();
+        decrement();
+        //clearInterval(intervalId);
+        intervalId = setInterval(decrement, 1000);
+
+    }, 0);
+
 
 }
 
@@ -177,14 +196,14 @@ function listAnswer() {
 
     //console.log(triviaObj[0].incorrect_answers.push(triviaObj[0].correct_answer));
     //TODO send answer array to the divs
-    var length = triviaObj[0].incorrect_answers.length;
+    var length = triviaObj[currentQuestion].incorrect_answers.length;
     console.log(length);
     var questionDiv = document.createElement("div");
     questionDiv.className = "title";
     var h2 = document.createElement('h2');
     h2.id = "questionTitle";
     questionDiv.appendChild(h2);
-    h2.innerHTML = triviaObj[0].question;
+    h2.innerHTML = triviaObj[currentQuestion].question;
     document.getElementsByClassName('mainGame')[0].appendChild(questionDiv);
 
     for (var i = 0; i < length; i++) {
@@ -193,7 +212,7 @@ function listAnswer() {
         var h3 = document.createElement('h3');
         h3.className = "answerSection";
         answerDiv.appendChild(h3);
-        h3.innerHTML = triviaObj[0].incorrect_answers[i];
+        h3.innerHTML = triviaObj[currentQuestion].incorrect_answers[i];
         document.getElementsByClassName('mainGame')[0].appendChild(answerDiv);
 
     }
@@ -215,7 +234,7 @@ function listAnswer() {
 
 
 
-function styleAnswer() {
+function styleAnswer() {//complete
     var div = document.getElementsByClassName('answers');
     console.log(div);
     for (var i = 0; i < div.length; i++) {
@@ -230,18 +249,30 @@ function styleAnswer() {
 };
 
 
+//TODO - set boolean if answer is correct
+var correct;
+//TODO - set boolean if answer is wrong
+var incorrect;
+//TODO- set boolean for next question regardless of correct or wrong
+var nextQuestion = false;
 
 function checkAnswer() {
+    correct = false;
+    incorrect = false;
     var div = document.getElementsByClassName('answers');
     console.log(div.length);
     for (var i = 0; i < div.length; i++) {
         div[i].addEventListener("click", function () {
 
-            if (this.getAttribute("data-value") === triviaObj[0].correct_answer) {
-                alert("correct!");
+            if (this.getAttribute("data-value") === triviaObj[currentQuestion].correct_answer) {
+                console.log(("correct!"));
+                correct = true;
+                itirateQuestions(triviaObj[currentQuestion].correct_answer);
             }
             else {
-                alert("wrong");
+                console.log(alert("wrong"));
+                incorrect = true;
+                //itirateQuestions();
             }
 
         });
@@ -249,9 +280,48 @@ function checkAnswer() {
 };
 
 
+//TODO-show screen if correct/incorrect/time is up
+function showScreenAfterSelection(element) {
+    $('.title').remove();
+    $('.answers').remove();
+    var div = document.createElement("div");
+    div.className = "afterSection";
+    var h2 = document.createElement('h2');
+    h2.id = "answerSection";
+    div.appendChild(h2);
+    document.getElementsByClassName('mainGame')[0].appendChild(div);
+    var h3 = document.createElement('h3');
 
 
-function itirateQuestions() {
+    if (correct) {
+        h2.innerHTML = "Correct!";
+        h3.id = "correctInfo";
+        div.appendChild(h3);
+        document.getElementsByClassName('mainGame')[0].appendChild(div);
+    }
+    if (incorrect) {
+        h2.innerHTML = "Incorrect!";
+        h3.id = "incorrectInfo";
+        div.appendChild(h3);
+        h3.innerHTML = "The correct answer was " + element;
+        document.getElementsByClassName('mainGame')[0].appendChild(div);
+    }
+
+}
+
+
+//TODO-itirate questions
+function itirateQuestions(el) {
+    if (correct) {
+        showScreenAfterSelection(el);
+        setTimeout(function () {
+            $('.afterSection').remove();
+            currentQuestion++;
+            run();
+        }, 3000);
+
+    }
+
 
 }
 
