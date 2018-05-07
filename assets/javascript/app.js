@@ -29,6 +29,7 @@ var triviaObj = [{
         "209",
         "200"
     ],
+    getGif: "skeleton",
 
     display: function () {
         var display1 = this.incorrect_answers;
@@ -48,6 +49,8 @@ var triviaObj = [{
         "Strike-slip",
         "Temblor"
     ],
+    getGif: "earthquake",
+
     display: function () {
         var display1 = this.incorrect_answers;
         var display2 = this.correct_answer;
@@ -55,6 +58,7 @@ var triviaObj = [{
         display1.splice(location, 0, display2);
         return display1;
     }
+
 },
 {
 
@@ -65,6 +69,7 @@ var triviaObj = [{
         "Chitin",
         "Calcium"
     ],
+    getGif: "finger nail",
     display: function () {
         var display1 = this.incorrect_answers;
         var display2 = this.correct_answer;
@@ -82,6 +87,8 @@ var triviaObj = [{
         "Redwood Tree",
         "The Coral Reef"
     ],
+    getGif: "honey fungus",
+
     display: function () {
         var display1 = this.incorrect_answers;
         var display2 = this.correct_answer;
@@ -144,6 +151,25 @@ var triviaObj = [{
 ]//end of questions array object
 
 
+function showGif() {
+    var movie = triviaObj[currentQuestion].getGif;
+    console.log(movie);
+    var queryURL = "http://api.giphy.com/v1/gifs/random?tag=funny+" + movie + "&api_key=b9iYVAwBVidnNVDrHuHcJZehZKWVNYSs";
+    $.ajax({
+        url: queryURL,
+        method: "GET"
+    }).then(function (response) {
+        var thisGif = response.data['images'].original['url'];
+        console.log(thisGif);
+        var div = document.createElement("div");
+        div.className = "gifSection";
+        var img=document.createElement("img");
+        img.src=thisGif;
+        div.appendChild(img);
+        document.getElementsByClassName('mainGame')[0].appendChild(div);
+    });
+}//get random gif related to correct/incorrect answer
+
 console.log(triviaObj[0].display1);
 
 
@@ -154,7 +180,8 @@ var numberofQuestions = triviaObj.length;
 var currentQuestion = 0;
 
 function run() {
-    timesUp = false;
+    $(".gifSection").remove();
+    timesUp=false;
     console.log(currentQuestion === numberofQuestions);
     if (currentQuestion === numberofQuestions) {
         return;
@@ -172,6 +199,7 @@ function run() {
         intervalId = setInterval(decrement, 1000);
         decrement();
         listAnswer();
+        
     }, 0);
 
 
@@ -180,10 +208,11 @@ function run() {
 function decrement() {
     number--;
     $("#timeRemaining").html("<h2> Time Remaining: " + number + "</h2>");
-    if(number==0){
+    if (number == 0) {
         clearInterval(intervalId);
     }
-    else if (number === 0 && !correct && !incorrect) {
+    if (number === 0 && !correct && !incorrect) {
+        console.log("test");
         clearInterval(intervalId);
         timesUp = true;
         itirateQuestions(triviaObj[currentQuestion].correct_answer);
@@ -267,20 +296,18 @@ function checkAnswer() {
     correct = false;
     incorrect = false;
     var div = document.getElementsByClassName('answers');
-    console.log(div.length);
+    //console.log(div.length);
     for (var i = 0; i < div.length; i++) {
-        div[i].addEventListener("click", function (el) {
-            console.log(el);
+        div[i].addEventListener("click", function () {
+            //console.log(el);
             if (this.getAttribute("data-value") === triviaObj[currentQuestion].correct_answer) {
                 console.log(("correct!"));
                 correct = true;
-                clicked = true;
                 itirateQuestions(triviaObj[currentQuestion].correct_answer);
             }
             else if (this.getAttribute("data-value") != triviaObj[currentQuestion].correct_answer) {
                 console.log("wrong");
                 incorrect = true;
-                clicked = true;
                 itirateQuestions(triviaObj[currentQuestion].correct_answer);
             }
 
@@ -308,6 +335,7 @@ function showScreenAfterSelection(element) {
         h3.id = "correctInfo";
         div.appendChild(h3);
         document.getElementsByClassName('mainGame')[0].appendChild(div);
+        showGif();
     }
     if (incorrect) {
         h2.innerHTML = "Incorrect!";
@@ -315,6 +343,7 @@ function showScreenAfterSelection(element) {
         div.appendChild(h3);
         h3.innerHTML = "The correct answer was " + element;
         document.getElementsByClassName('mainGame')[0].appendChild(div);
+        showGif();
     }
     if (timesUp) {
         h2.innerHTML = "Time is up!";
@@ -322,6 +351,7 @@ function showScreenAfterSelection(element) {
         div.appendChild(h3);
         h3.innerHTML = "The correct answer was " + element;
         document.getElementsByClassName('mainGame')[0].appendChild(div);
+        showGif();
     }
 
 }
@@ -353,7 +383,6 @@ function itirateQuestions(el) {
         setTimeout(function () {
             $('.afterSection').remove();
             currentQuestion++;
-            timesUp=false;
             run();
         }, 3000);
 
