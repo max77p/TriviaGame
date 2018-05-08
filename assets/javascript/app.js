@@ -153,27 +153,27 @@ var triviaObj = [{
 
 function showGif() {
     var correctMovie = "happy";
-    var incorrectMovie= "nope"
+    var incorrectMovie = "disappointed"
     //console.log(movie);
-    if(correct){
-    var queryURL = "http://api.giphy.com/v1/gifs/random?&api_key=b9iYVAwBVidnNVDrHuHcJZehZKWVNYSs&tag=" + correctMovie + "&rating=G";
+    if (correct) {
+        var queryURL = "http://api.giphy.com/v1/gifs/random?&api_key=b9iYVAwBVidnNVDrHuHcJZehZKWVNYSs&tag=" + correctMovie + "&rating=G";
     }
-    else if(incorrect){
+    else if (incorrect || timesUp) {
         var queryURL = "http://api.giphy.com/v1/gifs/random?&api_key=b9iYVAwBVidnNVDrHuHcJZehZKWVNYSs&tag=" + incorrectMovie + "&rating=G";
     }
-    console.log(queryURL);
-    
+  
+
     $.ajax({
         url: queryURL,
         method: "GET"
     }).then(function (response) {
-        var thisGif = response.data['images'].downsized['url'];
+        var thisGif = response.data['images'].fixed_height['webp'];
         console.log(thisGif);
         var div = document.createElement("div");
         div.className = "gifSection";
-        var img=document.createElement("img");
-        img.id="gifImg";
-        img.src=thisGif;
+        var img = document.createElement("img");
+        img.id = "gifImg";
+        img.src = thisGif;
         div.appendChild(img);
         document.getElementsByClassName('mainGame')[0].appendChild(div);
     });
@@ -190,10 +190,12 @@ var currentQuestion = 0;
 
 function run() {
     $(".gifSection").remove();
-    timesUp=false;
+    timesUp = false;
     console.log(currentQuestion === numberofQuestions);
     if (currentQuestion === numberofQuestions) {
+        endofGame();
         return;
+
     }
 
     number = 5;
@@ -208,7 +210,6 @@ function run() {
         intervalId = setInterval(decrement, 1000);
         decrement();
         listAnswer();
-        
     }, 0);
 
 
@@ -222,6 +223,7 @@ function decrement() {
     }
     if (number === 0 && !correct && !incorrect) {
         console.log("test");
+        unansweredCount++;
         clearInterval(intervalId);
         timesUp = true;
         itirateQuestions(triviaObj[currentQuestion].correct_answer);
@@ -312,11 +314,13 @@ function checkAnswer() {
             if (this.getAttribute("data-value") === triviaObj[currentQuestion].correct_answer) {
                 console.log(("correct!"));
                 correct = true;
+                correctCount++;
                 itirateQuestions(triviaObj[currentQuestion].correct_answer);
             }
             else if (this.getAttribute("data-value") != triviaObj[currentQuestion].correct_answer) {
                 console.log("wrong");
                 incorrect = true;
+                incorrectCount++
                 itirateQuestions(triviaObj[currentQuestion].correct_answer);
             }
 
@@ -397,10 +401,30 @@ function itirateQuestions(el) {
 
     }
 
-
-
 }
 
+//create starover page
+var correctCount=0;
+var incorrectCount=0;
+var unansweredCount=0;
+
+function endofGame() {
+    var div = document.createElement("div");
+    div.className = "gameEnd";
+    var h2 = document.createElement('h2');
+    h2.id = "endSection";
+    h2.innerHTML = "All done, heres how you did!";
+    div.appendChild(h2);
+    document.getElementsByClassName('mainGame')[0].appendChild(div);//append hows you did title
+
+    var h3=document.createElement("h3");
+    h3.className="scoreCount";
+    h3.innerHTML="Correct Answer: " + correctCount;
+    div.appendChild(h3);
+    document.getElementsByClassName('mainGame')[0].appendChild(div);
+    
+
+}
 
 
 
@@ -409,4 +433,3 @@ function itirateQuestions(el) {
   //TODO: show trivia questions on screen - done
   //TODO: set timer before game switches to next question - done
   //TODO: at end of time switch trivia questions -maybe use for loop on object -done
-  //TODO:
