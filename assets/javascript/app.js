@@ -161,7 +161,7 @@ function showGif() {
     else if (incorrect || timesUp) {
         var queryURL = "http://api.giphy.com/v1/gifs/random?&api_key=b9iYVAwBVidnNVDrHuHcJZehZKWVNYSs&tag=" + incorrectMovie + "&rating=G";
     }
-  
+
 
     $.ajax({
         url: queryURL,
@@ -199,7 +199,7 @@ function run() {
     }
 
     number = 5;
-    $('.title').remove();
+    $('#mainQuestion').empty();
     $('.answers').remove();
 
     currentDataValue = triviaObj[currentQuestion].display();
@@ -238,23 +238,32 @@ function listAnswer() {
     //TODO send answer array to the divs
     var length = triviaObj[currentQuestion].incorrect_answers.length;
     console.log(length);
-    var questionDiv = document.createElement("div");
-    questionDiv.className = "title";
+    //var questionDiv = document.createElement("div");
+    //questionDiv.className = "title";
+    var questionDiv=document.getElementById('mainQuestion');
     var h2 = document.createElement('h2');
     h2.id = "questionTitle";
     questionDiv.appendChild(h2);
     h2.innerHTML = triviaObj[currentQuestion].question;
-    document.getElementsByClassName('mainGame')[0].appendChild(questionDiv);
+    //document.getElementsByClassName('mainGame')[0].appendChild(questionDiv);
+
+    var wheretoinsert = document.getElementsByClassName('row');
+    console.log(wheretoinsert);
 
     for (var i = 0; i < length; i++) {
+        console.log(i);
         var answerDiv = document.createElement("div");
-        answerDiv.className = "answers";
+        answerDiv.className = "col-md-6 answers";//create columns for bootstrap
         var h3 = document.createElement('h3');
         h3.className = "answerSection";
+        h3.innerHTML = triviaObj[currentQuestion].incorrect_answers[i];//holds correct and incorrect due to object function
         answerDiv.appendChild(h3);
-        h3.innerHTML = triviaObj[currentQuestion].incorrect_answers[i];
-        document.getElementsByClassName('mainGame')[0].appendChild(answerDiv);
-
+        if(i<2){
+        wheretoinsert[0].appendChild(answerDiv);//put into respective rows for bootstrap
+        }
+        else if(i>=2){
+            wheretoinsert[1].appendChild(answerDiv);//put into respective rows for bootstrap
+        }
     }
 
     //put answer value to each potential answer div
@@ -280,11 +289,13 @@ function styleAnswer() {//complete
     console.log(div);
     for (var i = 0; i < div.length; i++) {
         div[i].addEventListener('mouseover', function () {
-            this.style.backgroundColor = "yellow";
+            this.style.border = "1px solid grey";
+            this.style.backgroundColor="#f5bf42";
 
         });
         div[i].addEventListener('mouseout', function () {
-            this.style.backgroundColor = "";
+            this.style.border = "";
+            this.style.backgroundColor="";
         });
     }
 };
@@ -332,7 +343,7 @@ function checkAnswer() {
 
 //TODO-show screen if correct/incorrect/time is up
 function showScreenAfterSelection(element) {
-    $('.title').remove();
+    $('#mainQuestion').empty();
     $('.answers').remove();
     var div = document.createElement("div");
     div.className = "afterSection";
@@ -378,7 +389,7 @@ function itirateQuestions(el) {
             $('.afterSection').remove();
             currentQuestion++;
             run();
-        }, 3000);
+        }, 4000);
 
     }
     if (incorrect) {
@@ -387,7 +398,7 @@ function itirateQuestions(el) {
             $('.afterSection').remove();
             currentQuestion++;
             run();
-        }, 3000);
+        }, 4000);
 
     }
 
@@ -397,18 +408,19 @@ function itirateQuestions(el) {
             $('.afterSection').remove();
             currentQuestion++;
             run();
-        }, 3000);
+        }, 4000);
 
     }
 
 }
 
 //create starover page
-var correctCount=0;
-var incorrectCount=0;
-var unansweredCount=0;
+var correctCount = 0;
+var incorrectCount = 0;
+var unansweredCount = 0;
 
 function endofGame() {
+    $('#timeRemaining').remove();
     var div = document.createElement("div");
     div.className = "gameEnd";
     var h2 = document.createElement('h2');
@@ -417,12 +429,25 @@ function endofGame() {
     div.appendChild(h2);
     document.getElementsByClassName('mainGame')[0].appendChild(div);//append hows you did title
 
-    var h3=document.createElement("h3");
-    h3.className="scoreCount";
-    h3.innerHTML="Correct Answer: " + correctCount;
+    var h3 = document.createElement("h3");
+    h3.className = "scoreCount";
+    h3.innerHTML = "Correct Answers: " + correctCount;
     div.appendChild(h3);
     document.getElementsByClassName('mainGame')[0].appendChild(div);
-    
+
+    var h3 = document.createElement("h3");
+    h3.className = "incorrectCount";
+    h3.innerHTML = "Incorrect Answers: " + incorrectCount;
+    div.appendChild(h3);
+    document.getElementsByClassName('mainGame')[0].appendChild(div);
+
+    var h3 = document.createElement("h3");
+    h3.className = "unansweredCount";
+    h3.innerHTML = "Unanswered: " + unansweredCount;
+    div.appendChild(h3);
+    document.getElementsByClassName('mainGame')[0].appendChild(div);
+
+
 
 }
 

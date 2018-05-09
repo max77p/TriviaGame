@@ -1,9 +1,16 @@
+body{
+    font-family: 'Merriweather', serif;
+    color:black;
+}
+
+
 .mainGame{
-    background-image: url("../images/background.jpg");
+    background-image: url("../images/trivia.jpg");
     /*background-position: center;*/
     background-repeat: no-repeat;
     background-size:100% 100%;
     min-height:50em;
+    padding-bottom:4em;
     margin-top:10px;
     margin-bottom:10px;
     box-shadow: 0px 0px 15px 13px;
@@ -19,6 +26,11 @@
     height:100%;
     margin:0 auto;
     margin-top:10em;
+    background-color:black;
+}
+
+.startBtn:hover,.startBtn:focus,.startBtn:active{
+    background-color:#f5bf42;
 }
 
 .mainTitleRow{
@@ -39,8 +51,8 @@
     font-size:2em;
     margin-top:3em;
 }
-.title{
-    border:2px solid red;
+#mainQuestion{
+    /*border:2px solid red;*/
     margin:0 auto;
     max-width:50em;
     text-align:center;
@@ -55,17 +67,34 @@
 }
 
 .mainTitleRow{
-    border:1px solid black;
+    /*border:1px solid black;*/
+}
+
+.allAnswers{
+    margin:0 auto;
+    max-width:60em;
+    /*padding:0;*/
 }
 
 
 .answers{
-    border:1px solid black;
-  margin:0 auto;
-  max-width:50em;
+    /*border:1px solid black;*/
+  /*margin:0 auto;*/
+  max-width:24em;
+  width:100%;
   text-align:center;
 }
 
+.rowSizing1,.rowSizing2{
+    display: flex;
+    justify-content: space-between;
+    max-width: 50em;
+    margin: 0 auto;
+}
+
+.rowSizing2{
+    margin-top:1em;
+}
 .answers:hover {
   cursor: pointer;
     -webkit-transform: perspective(1px) translateZ(0);
