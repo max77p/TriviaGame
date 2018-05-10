@@ -105,7 +105,17 @@ function createObj() {
             "Banana",
             "Concord Grape"
         ]
+    },
+    {
+        question: "What was the first living creature in space?",
+        correct_answer: "Fruit Flies",
+        incorrect_answers: [
+            "Monkey",
+            "Dog",
+            "Mouse"
+        ]
     }
+
     ]//end of questions array object
 
     //pick 7 randomly and assign it to triviaObj
@@ -115,7 +125,7 @@ function createObj() {
     }
     triviaObj.splice(-2);
     numberofQuestions = triviaObj.length;
-    console.log(triviaObj);
+    //console.log(triviaObj);
 }
 
 //createObj();
@@ -178,7 +188,7 @@ var gamerestart;
 function run() {
     $(".gifSection").remove();
     timesUp = false;
-    console.log(currentQuestion === numberofQuestions);
+    //console.log(currentQuestion === numberofQuestions);
     if (currentQuestion === numberofQuestions) {
         endofGame();
         currentDataValue = 0;
@@ -195,7 +205,7 @@ function run() {
     currentDataValue = allAnswerInOne(currentQuestion);
 
 
-    console.log(currentDataValue);
+    //console.log(currentDataValue);
     clearInterval(intervalId);
     setTimeout(function () {
         intervalId = setInterval(decrement, 1000);
@@ -238,10 +248,10 @@ function listAnswer() {
 
 
     var wheretoinsert = document.getElementsByClassName('row');
-    console.log(wheretoinsert);
+    //console.log(wheretoinsert);
 
     for (var i = 0; i < length; i++) {
-        console.log(i);
+        //console.log(i);
         var answerDiv = document.createElement("div");
         answerDiv.className = "col-md-6 answers";//create columns for bootstrap
         var h3 = document.createElement('h3');
@@ -276,7 +286,7 @@ function listAnswer() {
 
 function styleAnswer() {//complete
     var div = document.getElementsByClassName('answers');
-    console.log(div);
+    //console.log(div);
     for (var i = 0; i < div.length; i++) {
         div[i].addEventListener('mouseover', function () {
             this.style.border = "1px solid grey";
