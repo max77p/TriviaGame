@@ -127,6 +127,15 @@ function createObj() {
             "Dog",
             "Mouse"
         ]
+    },
+    {
+        question: "What animal is responsible for the most human deaths?",
+        correct_answer: "Mosquito",
+        incorrect_answers: [
+            "Snake",
+            "Assassin Bug",
+            "Tapeworm"
+        ]
     }
 
     ]//end of questions array object
@@ -140,7 +149,7 @@ function createObj() {
         triviaObj[i]=temp2;
         //[triviaObj[i], triviaObj[j]] = [triviaObj[j], triviaObj[i]];
     }
-    triviaObj.splice(-2);
+    triviaObj.splice(-3);
     numberofQuestions = triviaObj.length;
     console.log(triviaObj);
 }
@@ -445,7 +454,7 @@ function endofGame() {
     div.className = "gameEnd";
     var h2 = document.createElement('h2');
     h2.id = "endSection";
-    h2.innerHTML = "All done, heres how you did!";
+    h2.innerHTML = "All done, here's how you did!";
     div.appendChild(h2);
     document.getElementsByClassName('mainGame')[0].appendChild(div);//append hows you did title
 
