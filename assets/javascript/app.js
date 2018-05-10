@@ -6,14 +6,27 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementsByClassName('mainGame')[0].appendChild(startButton);
 
 
-    startButton.addEventListener("click", function () {
+    //startButton.addEventListener("click", function () {
+    // createObj();//set global variable triviaObj
+    // run();
+    //  startButton.style.display = "none";//remove button after click start
+    //  })
+
+
+    var callBack = function () {
         createObj();//set global variable triviaObj
         run();
-        startButton.style.display = "none";//remove button after click start
-    })
+        startButton.style.display = "none";//remove button after click start    
+    }
+    if ('addEventListener' in window) {
+        startButton.addEventListener("click", callBack);
+    } else {
+        startButton.attachEvent('onclick', callBack);
+    }
 
 
 });//show start button in initial page load
+
 
 //trivia questions object
 var triviaObj;//set triviaObj as global
