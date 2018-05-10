@@ -187,7 +187,7 @@ function showGif() {
         url: queryURL,
         method: "GET"
     }).then(function (response) {
-        var thisGif = response.data['images'].fixed_height['webp'];
+        var thisGif = response.data['images'].fixed_height['url'];
         console.log(thisGif);
         var div = document.createElement("div");
         div.className = "gifSection";
