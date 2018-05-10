@@ -14,9 +14,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });//show start button in initial page load
 
-
-
-
 //trivia questions object
 var currentDataValue;
 
@@ -28,17 +25,7 @@ var triviaObj = [{
         "203",
         "209",
         "200"
-    ],
-    getGif: "skeleton",
-
-    display: function () {
-        var display1 = this.incorrect_answers;
-        var display2 = this.correct_answer;
-        var location = [Math.floor(Math.random() * display1.length)];
-        display1.splice(location, 0, display2);
-        return display1;
-    }
-
+    ]
 },
 
 {
@@ -48,107 +35,74 @@ var triviaObj = [{
         "Foreshock",
         "Strike-slip",
         "Temblor"
-    ],
-    getGif: "earthquake",
-
-    display: function () {
-        var display1 = this.incorrect_answers;
-        var display2 = this.correct_answer;
-        var location = [Math.floor(Math.random() * display1.length)];
-        display1.splice(location, 0, display2);
-        return display1;
-    }
-
-},
-{
-
-    question: "What are human nails made of?",
-    correct_answer: "Keratin",
-    incorrect_answers: [
-        "Bone",
-        "Chitin",
-        "Calcium"
-    ],
-    getGif: "human+nail",
-    display: function () {
-        var display1 = this.incorrect_answers;
-        var display2 = this.correct_answer;
-        var location = [Math.floor(Math.random() * display1.length)];
-        display1.splice(location, 0, display2);
-        return display1;
-    }
-},
-{
-
-    question: "What is the largest living organism currently known to man?",
-    correct_answer: "Honey Fungus",
-    incorrect_answers: [
-        "Blue Whale",
-        "Redwood Tree",
-        "The Coral Reef"
-    ],
-    getGif: "honey fungus",
-
-    display: function () {
-        var display1 = this.incorrect_answers;
-        var display2 = this.correct_answer;
-        var location = [Math.floor(Math.random() * display1.length)];
-        display1.splice(location, 0, display2);
-        return display1;
-    }
-}, {
-
-    question: "What is the hottest planet in the Solar System?",
-    correct_answer: "Venus",
-    incorrect_answers: [
-        "Mars",
-        "Mercury",
-        "Jupiter"
-    ],
-    display: function () {
-        var display1 = this.incorrect_answers;
-        var display2 = this.correct_answer;
-        var location = [Math.floor(Math.random() * display1.length)];
-        display1.splice(location, 0, display2);
-        return display1;
-    }
-},
-{
-    question: "Which desert is the only desert in the world where the &quot;Saguaro&quot; cactus grows indigenously?",
-    correct_answer: "The Sonoran Desert",
-    incorrect_answers: [
-        "The Gobi Desert",
-        "The Yuma Desert",
-        "The Arabian Desert"
-    ],
-    display: function () {
-        var display1 = this.incorrect_answers;
-        var display2 = this.correct_answer;
-        var location = [Math.floor(Math.random() * display1.length)];
-        display1.splice(location, 0, display2);
-        return display1;
-    }
-
-},
-{
-
-    question: "Burning which of these metals will produce a bright white flame?",
-    correct_answer: "Magnesium",
-    incorrect_answers: [
-        "Copper",
-        "Lithium",
-        "Lead"
-    ],
-    display: function () {
-        var display1 = this.incorrect_answers;
-        var display2 = this.correct_answer;
-        var location = [Math.floor(Math.random() * display1.length)];
-        display1.splice(location, 0, display2);
-        return display1;
-    }
+    ]
 }
+    /*{
+    
+        question: "What are human nails made of?",
+        correct_answer: "Keratin",
+        incorrect_answers: [
+            "Bone",
+            "Chitin",
+            "Calcium"
+        ]
+    },
+    {
+    
+        question: "What is the largest living organism currently known to man?",
+        correct_answer: "Honey Fungus",
+        incorrect_answers: [
+            "Blue Whale",
+            "Redwood Tree",
+            "The Coral Reef"
+        ]
+    }, {
+    
+        question: "What is the hottest planet in the Solar System?",
+        correct_answer: "Venus",
+        incorrect_answers: [
+            "Mars",
+            "Mercury",
+            "Jupiter"
+        ]
+    },
+    {
+        question: "Which desert is the only desert in the world where the &quot;Saguaro&quot; cactus grows indigenously?",
+        correct_answer: "The Sonoran Desert",
+        incorrect_answers: [
+            "The Gobi Desert",
+            "The Yuma Desert",
+            "The Arabian Desert"
+        ]
+    
+    },
+    {
+    
+        question: "Burning which of these metals will produce a bright white flame?",
+        correct_answer: "Magnesium",
+        incorrect_answers: [
+            "Copper",
+            "Lithium",
+            "Lead"
+        ]
+    }*/
 
 ]//end of questions array object
+
+
+
+
+var allAnswerInOne = function (el) {
+    var display1 = triviaObj[el].incorrect_answers;
+    //console.log(display1);
+    var display2 = triviaObj[el].correct_answer;
+    //console.log(display2);
+    var location = [Math.floor(Math.random() * display1.length)];
+    display1.splice(location, 0, display2);
+    return display1;
+}
+//all answers in one
+
 
 
 function showGif() {
@@ -179,7 +133,7 @@ function showGif() {
     });
 }//get random gif related to correct/incorrect answer
 
-//console.log(triviaObj[0].display1);
+
 
 
 var intervalId;
@@ -187,7 +141,7 @@ var number;
 
 var numberofQuestions = triviaObj.length;
 var currentQuestion = 0;
-
+var gamerestart;
 function run() {
     $(".gifSection").remove();
     timesUp = false;
@@ -198,11 +152,13 @@ function run() {
 
     }
 
-    number = 5;
+    number = 5000;
     $('#mainQuestion').empty();
     $('.answers').remove();
 
-    currentDataValue = triviaObj[currentQuestion].display();
+    //currentDataValue = triviaObj[currentQuestion].display();
+    currentDataValue = allAnswerInOne(currentQuestion);
+   
 
     console.log(currentDataValue);
     clearInterval(intervalId);
@@ -236,11 +192,12 @@ function listAnswer() {
 
     //console.log(triviaObj[0].incorrect_answers.push(triviaObj[0].correct_answer));
     //TODO send answer array to the divs
-    var length = triviaObj[currentQuestion].incorrect_answers.length;
+    //var length = triviaObj[currentQuestion].incorrect_answers.length;///////////////////////
+    var length = currentDataValue.length;
     console.log(length);
     //var questionDiv = document.createElement("div");
     //questionDiv.className = "title";
-    var questionDiv=document.getElementById('mainQuestion');
+    var questionDiv = document.getElementById('mainQuestion');
     var h2 = document.createElement('h2');
     h2.id = "questionTitle";
     questionDiv.appendChild(h2);
@@ -256,12 +213,12 @@ function listAnswer() {
         answerDiv.className = "col-md-6 answers";//create columns for bootstrap
         var h3 = document.createElement('h3');
         h3.className = "answerSection";
-        h3.innerHTML = triviaObj[currentQuestion].incorrect_answers[i];//holds correct and incorrect due to object function
+        h3.innerHTML = currentDataValue[i];//holds correct and incorrect due to object function
         answerDiv.appendChild(h3);
-        if(i<2){
-        wheretoinsert[0].appendChild(answerDiv);//put into respective rows for bootstrap
+        if (i < 2) {
+            wheretoinsert[0].appendChild(answerDiv);//put into respective rows for bootstrap
         }
-        else if(i>=2){
+        else if (i >= 2) {
             wheretoinsert[1].appendChild(answerDiv);//put into respective rows for bootstrap
         }
     }
@@ -290,12 +247,12 @@ function styleAnswer() {//complete
     for (var i = 0; i < div.length; i++) {
         div[i].addEventListener('mouseover', function () {
             this.style.border = "1px solid grey";
-            this.style.backgroundColor="#f5bf42";
+            this.style.backgroundColor = "#f5bf42";
 
         });
         div[i].addEventListener('mouseout', function () {
             this.style.border = "";
-            this.style.backgroundColor="";
+            this.style.backgroundColor = "";
         });
     }
 };
@@ -420,7 +377,7 @@ var incorrectCount = 0;
 var unansweredCount = 0;
 
 function endofGame() {
-    $('#timeRemaining').remove();
+    //$('#timeRemaining').remove();
     var div = document.createElement("div");
     div.className = "gameEnd";
     var h2 = document.createElement('h2');
@@ -447,9 +404,30 @@ function endofGame() {
     div.appendChild(h3);
     document.getElementsByClassName('mainGame')[0].appendChild(div);
 
+    var endButton = document.createElement("input");
+    endButton.value = "Start Over?";
+    endButton.type = "button";
+    endButton.className = "btn btn-primary endBtn";
+    document.getElementsByClassName('mainGame')[0].appendChild(endButton);
 
+    endButton.addEventListener('click', function(event){
+        correctCount = 0;
+        incorrectCount = 0;
+        unansweredCount = 0;
+        currentQuestion = 0;
+        $('.gameEnd').remove();
+        gamerestart = true;
+        currentDataValue=null;
+        run();
+        $('.endBtn').remove();
+        console.log(currentDataValue);
+    });
 
 }
+
+
+
+
 
 
 
