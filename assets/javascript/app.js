@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });//show start button in initial page load
 
 //trivia questions object
-var currentDataValue;
+
 
 var triviaObj = [{
 
@@ -110,10 +110,10 @@ function showGif() {
     var incorrectMovie = "disappointed"
     //console.log(movie);
     if (correct) {
-        var queryURL = "http://api.giphy.com/v1/gifs/random?&api_key=b9iYVAwBVidnNVDrHuHcJZehZKWVNYSs&tag=" + correctMovie + "&rating=G";
+        var queryURL = "https://api.giphy.com/v1/gifs/random?&api_key=b9iYVAwBVidnNVDrHuHcJZehZKWVNYSs&tag=" + correctMovie + "&rating=G";
     }
     else if (incorrect || timesUp) {
-        var queryURL = "http://api.giphy.com/v1/gifs/random?&api_key=b9iYVAwBVidnNVDrHuHcJZehZKWVNYSs&tag=" + incorrectMovie + "&rating=G";
+        var queryURL = "https://api.giphy.com/v1/gifs/random?&api_key=b9iYVAwBVidnNVDrHuHcJZehZKWVNYSs&tag=" + incorrectMovie + "&rating=G";
     }
 
 
@@ -138,10 +138,12 @@ function showGif() {
 
 var intervalId;
 var number;
+var currentDataValue;
 
 var numberofQuestions = triviaObj.length;
 var currentQuestion = 0;
 var gamerestart;
+
 function run() {
     $(".gifSection").remove();
     timesUp = false;
@@ -157,7 +159,8 @@ function run() {
     $('.answers').remove();
 
     //currentDataValue = triviaObj[currentQuestion].display();
-    currentDataValue = allAnswerInOne(currentQuestion);
+    
+    currentDataValue =allAnswerInOne(currentQuestion);
    
 
     console.log(currentDataValue);
@@ -417,7 +420,6 @@ function endofGame() {
         currentQuestion = 0;
         $('.gameEnd').remove();
         gamerestart = true;
-        currentDataValue=null;
         run();
         $('.endBtn').remove();
         console.log(currentDataValue);
