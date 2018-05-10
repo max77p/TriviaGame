@@ -134,11 +134,15 @@ function createObj() {
     //pick 7 randomly and assign it to triviaObj
     for (let i = triviaObj.length - 1; i > 0; i--) {
         let j = Math.floor(Math.random() * (i + 1));
-        [triviaObj[i], triviaObj[j]] = [triviaObj[j], triviaObj[i]];
+        var temp1=triviaObj[i];
+        var temp2=triviaObj[j];
+        triviaObj[j]=temp1;
+        triviaObj[i]=temp2;
+        //[triviaObj[i], triviaObj[j]] = [triviaObj[j], triviaObj[i]];
     }
     triviaObj.splice(-2);
     numberofQuestions = triviaObj.length;
-    //console.log(triviaObj);
+    console.log(triviaObj);
 }
 
 //createObj();
