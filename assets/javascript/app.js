@@ -113,7 +113,7 @@ function createObj() {
         let j = Math.floor(Math.random() * (i + 1));
         [triviaObj[i], triviaObj[j]] = [triviaObj[j], triviaObj[i]];
     }
-    triviaObj.splice(-5);
+    triviaObj.splice(-2);
     numberofQuestions = triviaObj.length;
     console.log(triviaObj);
 }
@@ -186,7 +186,7 @@ function run() {
 
     }
 
-    number = 5000;
+    number = 20;
     $('#mainQuestion').empty();
     $('.answers').remove();
 
