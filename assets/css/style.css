@@ -28,8 +28,14 @@ body{
     margin-top:10em;
     background-color:black;
 }
+.endBtn{
+    display:flex;
+    justify-content: center;
+   margin:0 auto;
+    background-color:black;
+}
 
-.startBtn:hover,.startBtn:focus,.startBtn:active{
+.startBtn:hover,.startBtn:focus,.startBtn:active,.endBtn:hover,.endBtn:focus,.endBtn:active{
     background-color:#f5bf42;
 }
 

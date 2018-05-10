@@ -91,7 +91,7 @@ var triviaObj = [{
 
 
 
-
+//all answers in one array
 var allAnswerInOne = function (el) {
     var display1 = triviaObj[el].incorrect_answers;
     //console.log(display1);
@@ -101,7 +101,7 @@ var allAnswerInOne = function (el) {
     display1.splice(location, 0, display2);
     return display1;
 }
-//all answers in one
+
 
 
 
@@ -418,7 +418,7 @@ function endofGame() {
         unansweredCount = 0;
         currentQuestion = 0;
         $('.gameEnd').remove();
-        gamerestart = true;
+        gamerestart = true; 
         run();
         $('.endBtn').remove();
         console.log(currentDataValue);
