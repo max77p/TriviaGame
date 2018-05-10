@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     startButton.addEventListener("click", function () {
+        createObj();//set global variable triviaObj
         run();
         startButton.style.display = "none";//remove button after click start
     })
@@ -15,30 +16,31 @@ document.addEventListener("DOMContentLoaded", function () {
 });//show start button in initial page load
 
 //trivia questions object
+var triviaObj;//set triviaObj as global
 
+function createObj() {
+    triviaObj = [{
 
-var triviaObj = [{
+        question: "How many bones are in the human body?",
+        correct_answer: "206",
+        incorrect_answers: [
+            "203",
+            "209",
+            "200"
+        ]
+    },
 
-    question: "How many bones are in the human body?",
-    correct_answer: "206",
-    incorrect_answers: [
-        "203",
-        "209",
-        "200"
-    ]
-},
+    {
+        question: "Which of the following is NOT a word used to describe an earthquake?",
+        correct_answer: "Drop-slide",
+        incorrect_answers: [
+            "Foreshock",
+            "Strike-slip",
+            "Temblor"
+        ]
+    },
+    {
 
-{
-    question: "Which of the following is NOT a word used to describe an earthquake?",
-    correct_answer: "Drop-slide",
-    incorrect_answers: [
-        "Foreshock",
-        "Strike-slip",
-        "Temblor"
-    ]
-}
-    /*{
-    
         question: "What are human nails made of?",
         correct_answer: "Keratin",
         incorrect_answers: [
@@ -48,7 +50,7 @@ var triviaObj = [{
         ]
     },
     {
-    
+
         question: "What is the largest living organism currently known to man?",
         correct_answer: "Honey Fungus",
         incorrect_answers: [
@@ -57,7 +59,7 @@ var triviaObj = [{
             "The Coral Reef"
         ]
     }, {
-    
+
         question: "What is the hottest planet in the Solar System?",
         correct_answer: "Venus",
         incorrect_answers: [
@@ -74,10 +76,10 @@ var triviaObj = [{
             "The Yuma Desert",
             "The Arabian Desert"
         ]
-    
+
     },
     {
-    
+
         question: "Burning which of these metals will produce a bright white flame?",
         correct_answer: "Magnesium",
         incorrect_answers: [
@@ -85,11 +87,39 @@ var triviaObj = [{
             "Lithium",
             "Lead"
         ]
-    }*/
+    },
+    {
+        question: "Along with Oxygen, which element is primarily responsible for the sky appearing blue?",
+        correct_answer: "Nitrogen",
+        incorrect_answers: [
+            "Helium",
+            "Carbon",
+            "Hydrogen"
+        ]
+    },
+    {
+        question: "Botanically speaking, which of these fruits is NOT a berry?",
+        correct_answer: "Strawberry",
+        incorrect_answers: [
+            "Blueberry",
+            "Banana",
+            "Concord Grape"
+        ]
+    }
+    ]//end of questions array object
 
-]//end of questions array object
+    //pick 7 randomly and assign it to triviaObj
+    for (let i = triviaObj.length - 1; i > 0; i--) {
+        let j = Math.floor(Math.random() * (i + 1));
+        [triviaObj[i], triviaObj[j]] = [triviaObj[j], triviaObj[i]];
+    }
+    triviaObj.splice(-5);
+    numberofQuestions = triviaObj.length;
+    console.log(triviaObj);
+}
 
-
+//createObj();
+//console.log(triviaObj);
 
 //all answers in one array
 var allAnswerInOne = function (el) {
@@ -99,6 +129,7 @@ var allAnswerInOne = function (el) {
     //console.log(display2);
     var location = [Math.floor(Math.random() * display1.length)];
     display1.splice(location, 0, display2);
+    //console.log(display1);
     return display1;
 }
 
@@ -139,7 +170,8 @@ var intervalId;
 var number;
 var currentDataValue;
 
-var numberofQuestions = triviaObj.length;
+//var numberofQuestions = triviaObj.length;
+var numberofQuestions;
 var currentQuestion = 0;
 var gamerestart;
 
@@ -149,6 +181,7 @@ function run() {
     console.log(currentQuestion === numberofQuestions);
     if (currentQuestion === numberofQuestions) {
         endofGame();
+        currentDataValue = 0;
         return;
 
     }
@@ -158,9 +191,9 @@ function run() {
     $('.answers').remove();
 
     //currentDataValue = triviaObj[currentQuestion].display();
-    
-    currentDataValue =allAnswerInOne(currentQuestion);
-   
+
+    currentDataValue = allAnswerInOne(currentQuestion);
+
 
     console.log(currentDataValue);
     clearInterval(intervalId);
@@ -196,15 +229,13 @@ function listAnswer() {
     //TODO send answer array to the divs
     //var length = triviaObj[currentQuestion].incorrect_answers.length;///////////////////////
     var length = currentDataValue.length;
-    console.log(length);
-    //var questionDiv = document.createElement("div");
-    //questionDiv.className = "title";
+    //console.log(length);
     var questionDiv = document.getElementById('mainQuestion');
     var h2 = document.createElement('h2');
     h2.id = "questionTitle";
     questionDiv.appendChild(h2);
     h2.innerHTML = triviaObj[currentQuestion].question;
-    //document.getElementsByClassName('mainGame')[0].appendChild(questionDiv);
+
 
     var wheretoinsert = document.getElementsByClassName('row');
     console.log(wheretoinsert);
@@ -380,6 +411,9 @@ var unansweredCount = 0;
 
 function endofGame() {
     //$('#timeRemaining').remove();
+    //gameEnded = true;
+    $('#timeRemaining').hide();//hide timecount when its end of game
+
     var div = document.createElement("div");
     div.className = "gameEnd";
     var h2 = document.createElement('h2');
@@ -412,13 +446,14 @@ function endofGame() {
     endButton.className = "btn btn-primary endBtn";
     document.getElementsByClassName('mainGame')[0].appendChild(endButton);
 
-    endButton.addEventListener('click', function(event){
+    endButton.addEventListener('click', function (event) {
         correctCount = 0;
         incorrectCount = 0;
         unansweredCount = 0;
         currentQuestion = 0;
         $('.gameEnd').remove();
-        gamerestart = true; 
+        createObj();
+        $('#timeRemaining').show();//show timecount again after user presses restart
         run();
         $('.endBtn').remove();
         console.log(currentDataValue);
