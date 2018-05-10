@@ -116,7 +116,6 @@ function showGif() {
         var queryURL = "https://api.giphy.com/v1/gifs/random?&api_key=b9iYVAwBVidnNVDrHuHcJZehZKWVNYSs&tag=" + incorrectMovie + "&rating=G";
     }
 
-
     $.ajax({
         url: queryURL,
         method: "GET"
